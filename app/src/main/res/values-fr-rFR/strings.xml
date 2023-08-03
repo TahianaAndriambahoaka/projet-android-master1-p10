@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Tourisme-1076-1146</string>
+    <string name="title_activity_liste">ListeActivity</string>
+    <string name="login_title">Veuillez-vous connecter</string>
+    <string name="email_address">Adresse mail</string>
+    <string name="password">Mot de passe</string>
+    <string name="connect">Se connecter</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="sign_up_title">Inscription</string>
+    <string name="name">Nom</string>
+    <string name="first_name">Prénom(s)</string>
+    <string name="password_confirmation">Confirmez votre mot de passe</string>
+    <string name="search">Rechercher...</string>
+    <string name="details">Détails</string>
+    <string name="gallery">Galerie</string>
+    <string name="description">Description</string>
+    <string name="rate_this_activity">Évaluer cette activité</string>
+    <string name="list_of_activities">Liste des activités</string>
+    <string name="language">Langue</string>
+    <string name="french">Français</string>
+    <string name="english">Anglais</string>
+    <string name="logout">Se déconnecter</string>
+    <string name="loading">Chargement...</string>
+    <string name="required_field">Champ obligatoire</string>
+    <string name="invalid_email_address">Adresse mail invalide</string>
+    <string name="authentication_error">Erreur d\'authentification</string>
+    <string name="different_passwords">Mots de passes non identiques</string>
+    <string name="sign_up_error">Erreur d\'inscription</string>
+</resources>
