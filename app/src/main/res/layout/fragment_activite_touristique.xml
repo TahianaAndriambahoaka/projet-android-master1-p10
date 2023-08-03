@@ -56,21 +56,21 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_baseline_star_rate_yellow_24" />
+                            android:src="@drawable/ic_baseline_star_rate_gray_24" />
 
                         <ImageView
                             android:id="@+id/etoile2"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_baseline_star_rate_yellow_24" />
+                            android:src="@drawable/ic_baseline_star_rate_gray_24" />
 
                         <ImageView
                             android:id="@+id/etoile3"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_baseline_star_rate_yellow_24" />
+                            android:src="@drawable/ic_baseline_star_rate_gray_24" />
 
                         <ImageView
                             android:id="@+id/etoile4"

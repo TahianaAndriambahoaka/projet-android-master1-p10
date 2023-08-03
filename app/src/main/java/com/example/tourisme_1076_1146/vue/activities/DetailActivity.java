@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,23 +26,31 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.tourisme_1076_1146.R;
 import com.example.tourisme_1076_1146.controleur.LanguagePreferences;
+import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
+    ActiviteTouristique activiteTouristique;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("data")) {
+            this.activiteTouristique = (ActiviteTouristique) intent.getSerializableExtra("data");
+        }
+
         setTitle(getString(R.string.details));
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.blue));
         // Activer le bouton de retour
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String videoUrl = "https://www.youtube.com/embed/Nya6D8mKtSo";
+        String videoUrl = this.activiteTouristique.getVideoURL();
         WebView webView = findViewById(R.id.videoView);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -60,11 +69,25 @@ public class DetailActivity extends AppCompatActivity {
         spannableStringGalerieTitre.setSpan(new UnderlineSpan(), 0, textGalerieTitre.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         galerieTitre.setText(spannableStringGalerieTitre);
 
+        ((TextView)findViewById(R.id.description)).setText(this.activiteTouristique.getDescription());
+        ((TextView)findViewById(R.id.titre)).setText(this.activiteTouristique.getTitre());
+
+        if (this.activiteTouristique.getNbEtoiles() >= 1) ((ImageView)findViewById(R.id.etoile1)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+        if (this.activiteTouristique.getNbEtoiles() >= 2) ((ImageView)findViewById(R.id.etoile2)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+        if (this.activiteTouristique.getNbEtoiles() >= 3) ((ImageView)findViewById(R.id.etoile3)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+        if (this.activiteTouristique.getNbEtoiles() >= 4) ((ImageView)findViewById(R.id.etoile4)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+        if (this.activiteTouristique.getNbEtoiles() == 5) ((ImageView)findViewById(R.id.etoile5)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+
+        if (this.activiteTouristique.getNbVotes()<=1) {
+            ((TextView) findViewById(R.id.nbRates)).setText("(" + this.activiteTouristique.getNbVotes() + " " + getString(R.string.vote) + ")");
+        } else {
+            ((TextView) findViewById(R.id.nbRates)).setText("(" + this.activiteTouristique.getNbVotes() + " " + getString(R.string.votes) + ")");
+        }
+
         ImageSlider imageSlider = findViewById(R.id.imageSlider);
         List<SlideModel> slideModels = new ArrayList<>();
-        slideModels.add(new SlideModel("https://picsum.photos/id/237/200/300", ScaleTypes.CENTER_CROP));
-        slideModels.add(new SlideModel("https://picsum.photos/seed/picsum/200/300", ScaleTypes.CENTER_CROP));
-        slideModels.add(new SlideModel("https://picsum.photos/200/300?grayscale", ScaleTypes.CENTER_CROP));
+        for (int i = 0; i < this.activiteTouristique.getImagesURL().size(); i++)
+            slideModels.add(new SlideModel(this.activiteTouristique.getImagesURL().get(i), ScaleTypes.CENTER_CROP));
         imageSlider.setImageList(slideModels);
     }
 

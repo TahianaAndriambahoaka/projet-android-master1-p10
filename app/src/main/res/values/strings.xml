@@ -26,4 +26,6 @@
     <string name="authentication_error">Authentication error</string>
     <string name="different_passwords">Passwords are different</string>
     <string name="sign_up_error">Registration error</string>
+    <string name="vote">vote</string>
+    <string name="votes">votes</string>
 </resources>

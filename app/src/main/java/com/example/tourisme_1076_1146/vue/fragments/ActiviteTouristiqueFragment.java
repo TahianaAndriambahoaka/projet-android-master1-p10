@@ -29,13 +29,11 @@ public class ActiviteTouristiqueFragment extends Fragment {
 
         ((TextView)v.findViewById(R.id.Titre)).setText(this.activiteTouristique.getTitre());
 
-        ((TextView)v.findViewById(R.id.nbRates)).setText("("+this.activiteTouristique.getNbVotes()+" votes)");
-
-        ((ImageView)v.findViewById(R.id.etoile1)).setImageResource(R.drawable.ic_baseline_star_rate_gray_24);
-        ((ImageView)v.findViewById(R.id.etoile2)).setImageResource(R.drawable.ic_baseline_star_rate_gray_24);
-        ((ImageView)v.findViewById(R.id.etoile3)).setImageResource(R.drawable.ic_baseline_star_rate_gray_24);
-        ((ImageView)v.findViewById(R.id.etoile4)).setImageResource(R.drawable.ic_baseline_star_rate_gray_24);
-        ((ImageView)v.findViewById(R.id.etoile5)).setImageResource(R.drawable.ic_baseline_star_rate_gray_24);
+        if (this.activiteTouristique.getNbVotes()<=1) {
+            ((TextView) v.findViewById(R.id.nbRates)).setText("(" + this.activiteTouristique.getNbVotes() + " " + getString(R.string.vote) + ")");
+        } else {
+            ((TextView) v.findViewById(R.id.nbRates)).setText("(" + this.activiteTouristique.getNbVotes() + " " + getString(R.string.votes) + ")");
+        }
 
         if (this.activiteTouristique.getNbEtoiles() >= 1) ((ImageView)v.findViewById(R.id.etoile1)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
         if (this.activiteTouristique.getNbEtoiles() >= 2) ((ImageView)v.findViewById(R.id.etoile2)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
@@ -43,7 +41,7 @@ public class ActiviteTouristiqueFragment extends Fragment {
         if (this.activiteTouristique.getNbEtoiles() >= 4) ((ImageView)v.findViewById(R.id.etoile4)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
         if (this.activiteTouristique.getNbEtoiles() == 5) ((ImageView)v.findViewById(R.id.etoile5)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
 
-        ImageView imageView = (ImageView)v.findViewById(R.id.image);
+        ImageView imageView = v.findViewById(R.id.image);
         Glide.with(this)
                 .load(this.activiteTouristique.getImagesURL().get(0))
                 .into(imageView);
@@ -52,6 +50,7 @@ public class ActiviteTouristiqueFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra("data", ActiviteTouristiqueFragment.this.activiteTouristique);
                 startActivity(intent);
             }
         });

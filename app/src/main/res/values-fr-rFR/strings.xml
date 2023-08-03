@@ -26,4 +26,6 @@
     <string name="authentication_error">Erreur d\'authentification</string>
     <string name="different_passwords">Mots de passes non identiques</string>
     <string name="sign_up_error">Erreur d\'inscription</string>
+    <string name="vote">vote</string>
+    <string name="votes">votes</string>
 </resources>
