@@ -18,10 +18,10 @@
             android:layout_margin="8dp"
             android:closeIcon="@drawable/ic_baseline_close_24"
             android:iconifiedByDefault="false"
-            android:queryBackground="@android:color/white"
+            android:queryBackground="@color/background_2"
             android:queryHint="@string/search"
             android:searchIcon="@drawable/ic_baseline_search_24"
-            android:submitBackground="@android:color/white"
+            android:submitBackground="@color/background_2"
             android:theme="@style/SearchViewTheme" />
     </androidx.cardview.widget.CardView>
 

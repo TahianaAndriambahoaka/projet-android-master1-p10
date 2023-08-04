@@ -28,4 +28,7 @@
     <string name="sign_up_error">Registration error</string>
     <string name="vote">vote</string>
     <string name="votes">votes</string>
+    <string name="theme">Theme</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
 </resources>

@@ -8,21 +8,22 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.tourisme_1076_1146.R;
 import com.example.tourisme_1076_1146.controleur.Controleur;
-import com.example.tourisme_1076_1146.controleur.LanguagePreferences;
+import com.example.tourisme_1076_1146.controleur.LanguagePreference;
+import com.example.tourisme_1076_1146.controleur.ThemePreference;
 import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 import com.example.tourisme_1076_1146.vue.fragments.ActiviteTouristiqueFragment;
 import com.example.tourisme_1076_1146.vue.fragments.RechercheFragment;
@@ -31,8 +32,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class ListeActivity extends AppCompatActivity implements RechercheFragment.OnSearchSubmitListener {
-
-    DrawerLayout settings;
 
     @Override
     public void onSearchSubmit(String query) {
@@ -46,7 +45,7 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
 
         setContentView(R.layout.activity_liste);
         setTitle(getString(R.string.list_of_activities));
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.blue));
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.action_bar));
 
         RechercheFragment rechercheFragment = new RechercheFragment();
         rechercheFragment.setOnSearchSubmitListener(this);
@@ -67,6 +66,35 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+
+        MenuItem switchMenuItem = menu.findItem(R.id.theme_switch);
+        View actionView = switchMenuItem.getActionView();
+        SwitchCompat switchCompat = actionView.findViewById(R.id.switch_button);
+        String themeModeName = ThemePreference.getThemeMode(this);
+        if (themeModeName.equals("DARK")) {
+            switchCompat.setChecked(true);
+        } else {
+            switchCompat.setChecked(false);
+        }
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    ThemePreference.saveThemeMode(ListeActivity.this, ThemePreference.ThemeMode.DARK);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                } else {
+                    ThemePreference.saveThemeMode(ListeActivity.this, ThemePreference.ThemeMode.LIGHT);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                }
+            }
+        });
+
         return true;
     }
 
@@ -90,19 +118,6 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
     }
 
     private void addActiviteTouristiqueFragment(Fragment fragment) {
-//        FragmentContainerView container = new FragmentContainerView(this);
-//        container.setId(ViewPager.generateViewId());
-//        container.setLayoutParams(new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT
-//        ));
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(container.getId(), fragment)
-//                .commit();
-//
-//        LinearLayout containerLayout = findViewById(R.id.containerLayout);
-//        containerLayout.addView(container);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.containerLayout, fragment);
@@ -110,7 +125,7 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
     }
 
     private void changeLanguage(String languageCode) {
-        LanguagePreferences.saveLanguage(this, languageCode);
+        LanguagePreference.saveLanguage(this, languageCode);
         Resources resources = getResources();
         Configuration configuration = resources.getConfiguration();
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();

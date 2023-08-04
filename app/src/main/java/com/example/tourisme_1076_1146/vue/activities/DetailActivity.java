@@ -1,22 +1,16 @@
 package com.example.tourisme_1076_1146.vue.activities;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.UnderlineSpan;
-import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,12 +19,10 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.tourisme_1076_1146.R;
-import com.example.tourisme_1076_1146.controleur.LanguagePreferences;
 import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
     ActiviteTouristique activiteTouristique;
@@ -46,7 +38,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         setTitle(getString(R.string.details));
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.blue));
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.action_bar));
         // Activer le bouton de retour
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -56,18 +48,6 @@ public class DetailActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
         webView.loadUrl(videoUrl);
-
-        TextView descriptionTitre = findViewById(R.id.descriptionTitre);
-        String textDescriptionTitre = descriptionTitre.getText().toString();
-        SpannableString spannableStringDescriptionTitre = new SpannableString(textDescriptionTitre);
-        spannableStringDescriptionTitre.setSpan(new UnderlineSpan(), 0, textDescriptionTitre.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        descriptionTitre.setText(spannableStringDescriptionTitre);
-
-        TextView galerieTitre = findViewById(R.id.galerieTitre);
-        String textGalerieTitre = galerieTitre.getText().toString();
-        SpannableString spannableStringGalerieTitre = new SpannableString(textGalerieTitre);
-        spannableStringGalerieTitre.setSpan(new UnderlineSpan(), 0, textGalerieTitre.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        galerieTitre.setText(spannableStringGalerieTitre);
 
         ((TextView)findViewById(R.id.description)).setText(this.activiteTouristique.getDescription());
         ((TextView)findViewById(R.id.titre)).setText(this.activiteTouristique.getTitre());

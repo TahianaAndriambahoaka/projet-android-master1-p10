@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Oval Shape -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/orange" />
+            <size android:width="20dp" android:height="20dp" />
+        </shape>
+    </item>
+
+    <!-- Drawable Vector (Image) inside the Oval -->
+    <item
+        android:drawable="@drawable/ic_baseline_wb_sunny_12"
+        android:gravity="center">
+        <!-- You can adjust padding here if needed -->
+        <padding android:left="20dp"
+            android:top="20dp"
+            android:right="20dp"
+            android:bottom="20dp" />
+    </item>
+
+</layer-list>

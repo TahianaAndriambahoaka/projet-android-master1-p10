@@ -44,14 +44,14 @@
     <style name="Theme.Tourisme10761146.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="SearchViewTheme" parent="Widget.AppCompat.SearchView">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textColorHint">@color/dark_gray</item>
-        <item name="android:editTextColor">@color/black</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/text_1</item>
+        <item name="android:textColorHint">@color/text_2</item>
+        <item name="android:editTextColor">@color/text_1</item>
+        <item name="android:background">@color/background_2</item>
     </style>
 
     <style name="CardViewStyle" parent="Widget.MaterialComponents.CardView">
-        <item name="cardBackgroundColor">@android:color/white</item> <!-- Définissez la couleur du fond de la CardView -->
+        <item name="cardBackgroundColor">@color/background_2</item> <!-- Définissez la couleur du fond de la CardView -->
         <item name="cardElevation">2dp</item> <!-- Définissez la distance de l'ombre en dp -->
     </style>
 </resources>

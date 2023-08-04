@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
-public class LanguagePreferences {
+public class LanguagePreference {
     private static final String KEY_LANGUAGE_CODE = "fr";
 
     public static void saveLanguage(Context context, String languageCode) {

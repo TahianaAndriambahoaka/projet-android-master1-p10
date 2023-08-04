@@ -18,6 +18,10 @@ import com.example.tourisme_1076_1146.vue.activities.DetailActivity;
 public class ActiviteTouristiqueFragment extends Fragment {
     private ActiviteTouristique activiteTouristique;
 
+    public ActiviteTouristiqueFragment() {
+        super();
+    }
+
     public ActiviteTouristiqueFragment(ActiviteTouristique activiteTouristique) {
         this.activiteTouristique = activiteTouristique;
     }

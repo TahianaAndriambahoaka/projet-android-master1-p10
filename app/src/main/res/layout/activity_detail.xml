@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_background"
+            android:background="@color/background_1"
             android:orientation="vertical"
             android:padding="20dp"
             tools:ignore="WebViewLayout">
@@ -32,7 +32,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Titre de l'activité"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="@color/black" />
+                android:textColor="@color/text_1" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -81,17 +81,17 @@
                     android:layout_weight="1"
                     android:text="(3 votes)"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/dark_gray" />
+                    android:textColor="@color/text_2" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/descriptionTitre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="40dp"
                 android:text="@string/description"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/black" />
+                android:textColor="@color/text_1" />
 
             <TextView
                 android:id="@+id/description"
@@ -100,16 +100,16 @@
                 android:layout_marginTop="5dp"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/dark_gray" />
+                android:textColor="@color/text_2" />
 
             <TextView
                 android:id="@+id/galerieTitre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="40dp"
                 android:text="@string/gallery"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/black" />
+                android:textColor="@color/text_1" />
 
             <com.denzcoskun.imageslider.ImageSlider
                 android:id="@+id/imageSlider"
@@ -131,7 +131,7 @@
                 android:layout_marginTop="40dp"
                 android:text="@string/rate_this_activity"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/black" />
+                android:textColor="@color/text_1" />
 
             <LinearLayout
                 android:layout_width="300dp"

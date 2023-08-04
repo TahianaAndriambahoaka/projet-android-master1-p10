@@ -13,10 +13,10 @@
     <color name="yellow">#FFFF00</color>
     <color name="orange">#FFA500</color>
 
-    <color name="action_bar">#002eb3</color>
-    <color name="text_1">#FF000000</color>
-    <color name="text_2">#787878</color>
-    <color name="link">#002eb3</color>
-    <color name="background_1">#FFFFFFFF</color>
-    <color name="background_2">#f2f2f2</color>
+    <color name="action_bar">#0072B3</color>
+    <color name="text_1">#FFFFFFFF</color>
+    <color name="text_2">#d0d0d0</color>
+    <color name="link">#0072B3</color>
+    <color name="background_1">#444444</color>
+    <color name="background_2">#3c3c3c</color>
 </resources>

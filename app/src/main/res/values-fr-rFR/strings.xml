@@ -28,4 +28,7 @@
     <string name="sign_up_error">Erreur d\'inscription</string>
     <string name="vote">vote</string>
     <string name="votes">votes</string>
+    <string name="theme">Thème</string>
+    <string name="dark">Sombre</string>
+    <string name="light">Clair</string>
 </resources>
