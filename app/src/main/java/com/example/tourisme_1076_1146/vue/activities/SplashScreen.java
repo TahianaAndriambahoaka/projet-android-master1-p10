@@ -19,7 +19,6 @@ import java.util.Locale;
 public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         String themeModeName = ThemePreference.getThemeMode(this);
         if (themeModeName.equals("DARK")) {
             Toast.makeText(this, "DARK", Toast.LENGTH_SHORT).show();
@@ -35,6 +34,8 @@ public class SplashScreen extends AppCompatActivity {
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
         configuration.setLocale(new Locale(savedLanguage));
         resources.updateConfiguration(configuration, displayMetrics);
+
+        super.onCreate(savedInstanceState);
 
         new Handler().postDelayed(new Runnable() {
             @Override

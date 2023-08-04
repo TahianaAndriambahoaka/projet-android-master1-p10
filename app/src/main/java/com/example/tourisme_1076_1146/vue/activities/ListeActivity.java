@@ -42,24 +42,33 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_liste);
         setTitle(getString(R.string.list_of_activities));
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.action_bar));
 
-        RechercheFragment rechercheFragment = new RechercheFragment();
-        rechercheFragment.setOnSearchSubmitListener(this);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.searchLayout, rechercheFragment);
-        fragmentTransaction.commit();
+        if (savedInstanceState == null) {
+            RechercheFragment rechercheFragment = new RechercheFragment();
+            rechercheFragment.setOnSearchSubmitListener(this);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.searchLayout, rechercheFragment);
+            fragmentTransaction.commit();
 
 
-        Controleur controleur = Controleur.getInstance();
-        List<ActiviteTouristique> data = controleur.getAllActiviteTouristique();
-        for (int i = 0; i < data.size(); i++) {
-            addActiviteTouristiqueFragment(new ActiviteTouristiqueFragment(data.get(i)));
+            Controleur controleur = Controleur.getInstance();
+            List<ActiviteTouristique> data = controleur.getAllActiviteTouristique();
+            for (int i = 0; i < data.size(); i++) {
+                addActiviteTouristiqueFragment(new ActiviteTouristiqueFragment(data.get(i)));
+            }
         }
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("reloaded", true);
     }
 
     @Override
@@ -82,15 +91,15 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
                 if (isChecked) {
                     ThemePreference.saveThemeMode(ListeActivity.this, ThemePreference.ThemeMode.DARK);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
+//                    Intent intent = getIntent();
+//                    finish();
+//                    startActivity(intent);
                 } else {
                     ThemePreference.saveThemeMode(ListeActivity.this, ThemePreference.ThemeMode.LIGHT);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
+//                    Intent intent = getIntent();
+//                    finish();
+//                    startActivity(intent);
                 }
             }
         });
