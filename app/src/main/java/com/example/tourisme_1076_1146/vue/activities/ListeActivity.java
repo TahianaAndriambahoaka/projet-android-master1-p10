@@ -91,15 +91,9 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
                 if (isChecked) {
                     ThemePreference.saveThemeMode(ListeActivity.this, ThemePreference.ThemeMode.DARK);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                    Intent intent = getIntent();
-//                    finish();
-//                    startActivity(intent);
                 } else {
                     ThemePreference.saveThemeMode(ListeActivity.this, ThemePreference.ThemeMode.LIGHT);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                    Intent intent = getIntent();
-//                    finish();
-//                    startActivity(intent);
                 }
             }
         });
@@ -140,10 +134,6 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
         configuration.setLocale(new Locale(languageCode));
         resources.updateConfiguration(configuration, displayMetrics);
-
-        // Redémarrer l'activité actuelle pour appliquer les changements
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+        recreate();
     }
 }
