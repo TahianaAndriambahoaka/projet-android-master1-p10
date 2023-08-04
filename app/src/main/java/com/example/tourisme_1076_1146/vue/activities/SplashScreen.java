@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -21,10 +20,8 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         String themeModeName = ThemePreference.getThemeMode(this);
         if (themeModeName.equals("DARK")) {
-            Toast.makeText(this, "DARK", Toast.LENGTH_SHORT).show();
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
-            Toast.makeText(this, "LIGHT", Toast.LENGTH_SHORT).show();
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 

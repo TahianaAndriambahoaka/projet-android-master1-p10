@@ -2,9 +2,6 @@ package com.example.tourisme_1076_1146.controleur;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatDelegate;
 
 public class ThemePreference {
     private static final String SHARED_PREFS_NAME = "theme_prefs";

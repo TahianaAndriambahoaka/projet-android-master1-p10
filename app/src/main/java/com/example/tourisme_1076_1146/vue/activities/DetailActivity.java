@@ -2,9 +2,6 @@ package com.example.tourisme_1076_1146.vue.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.UnderlineSpan;
 import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;

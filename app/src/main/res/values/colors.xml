@@ -19,4 +19,6 @@
     <color name="link">#002eb3</color>
     <color name="background_1">#FFFFFFFF</color>
     <color name="background_2">#f2f2f2</color>
+    <color name="background_cardLogin">#FFFFFFFF</color>
+    <color name="background_textInput">#f2f2f2</color>
 </resources>

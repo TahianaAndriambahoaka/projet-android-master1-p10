@@ -2,6 +2,7 @@ package com.example.tourisme_1076_1146.controleur;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.preference.PreferenceManager;
 
 public class LanguagePreference {
