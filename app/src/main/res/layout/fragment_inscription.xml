@@ -24,7 +24,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nomInput"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:hint="@string/name"
             android:textColorHint="@color/text_2"
@@ -41,7 +41,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/prenomInput"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:hint="@string/first_name"
             android:textColorHint="@color/text_2"
@@ -58,7 +58,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailInput"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:hint="@string/email_address"
             android:textColorHint="@color/text_2"
@@ -75,7 +75,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/mdp1Input"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:hint="@string/password"
             android:textColorHint="@color/text_2"
@@ -92,7 +92,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/mdp2Input"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:hint="@string/password_confirmation"
             android:textColorHint="@color/text_2"
@@ -119,6 +119,7 @@
             android:id="@+id/link"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="@string/connect"
             android:textAlignment="center"
             android:textColor="@color/link"

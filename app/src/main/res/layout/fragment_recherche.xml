@@ -22,6 +22,7 @@
             android:queryHint="@string/search"
             android:searchIcon="@drawable/ic_baseline_search_24"
             android:submitBackground="@color/background_1"
+            android:focusable="false"
             android:theme="@style/SearchViewTheme" />
     </androidx.cardview.widget.CardView>
 

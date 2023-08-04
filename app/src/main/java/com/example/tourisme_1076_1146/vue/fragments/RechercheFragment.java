@@ -28,7 +28,8 @@ public class RechercheFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recherche, container, false);
 
-        ((SearchView)v.findViewById(R.id.searchView)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        SearchView searchView = v.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (searchSubmitListener != null) {
