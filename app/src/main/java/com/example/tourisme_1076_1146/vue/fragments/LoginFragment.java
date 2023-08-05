@@ -28,6 +28,9 @@ public class LoginFragment extends Fragment {
     private Button button;
     private Button error;
     private TextView link;
+    private boolean isSubmitted;
+    private String email;
+    private String mdp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +46,9 @@ public class LoginFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 LoginFragment.this.error.setVisibility(View.GONE);
+                LoginFragment.this.email = LoginFragment.this.emailInput.getEditText().getText().toString().trim();
+                if (LoginFragment.this.isSubmitted)
+                    LoginFragment.this.controle();
             }
 
             @Override
@@ -56,6 +62,9 @@ public class LoginFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 LoginFragment.this.error.setVisibility(View.GONE);
+                LoginFragment.this.mdp = LoginFragment.this.mdpInput.getEditText().getText().toString().trim();
+                if (LoginFragment.this.isSubmitted)
+                    LoginFragment.this.controle();
             }
 
             @Override
@@ -65,10 +74,9 @@ public class LoginFragment extends Fragment {
         this.link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InscriptionFragment inscriptionFragment = new InscriptionFragment();
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.card, inscriptionFragment)
+                        .replace(R.id.card, new InscriptionFragment())
                         .commit();
             }
         });
@@ -76,15 +84,15 @@ public class LoginFragment extends Fragment {
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LoginFragment.this.isSubmitted = true;
                 LoginFragment.this.button.setText(getString(R.string.loading));
 
-                String email = LoginFragment.this.emailInput.getEditText().getText().toString().trim();
-                String mdp = LoginFragment.this.mdpInput.getEditText().getText().toString().trim();
-
-                LoginFragment.this.controle(email, mdp);
+                LoginFragment.this.controle();
 
                 if (LoginFragment.this.isOK())
-                    LoginFragment.this.authentification(email, mdp);
+                    LoginFragment.this.authentification();
+                else
+                    LoginFragment.this.button.setText(getString(R.string.connect));
             }
         });
 
@@ -95,16 +103,15 @@ public class LoginFragment extends Fragment {
         return LoginFragment.this.emailInput.getError()==null && LoginFragment.this.mdpInput.getError()==null;
     }
 
-    private void authentification(String email, String mdp) {
+    private void authentification() {
         try {
-            Controleur.getInstance().authentification(email, mdp, new Controleur.AuthentificationCallback() {
+            Controleur.getInstance().authentification(this.email, this.mdp, new Controleur.CallbackWS() {
                 @Override
                 public void onSuccess(String token) {
                     LoginFragment.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             LoginFragment.this.button.setText(getString(R.string.connect));
-                            LoginFragment.this.error.setVisibility(View.GONE);
                             Intent intent = new Intent(LoginFragment.this.getActivity(), ListeActivity.class);
                             LoginFragment.this.startActivity(intent);
                             LoginFragment.this.getActivity().finish();
@@ -143,20 +150,18 @@ public class LoginFragment extends Fragment {
     }
 
 
-    private void controle(String email, String mdp) {
-        if (email.isEmpty()) {
-            LoginFragment.this.emailInput.setError(getString(R.string.required_field));
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            LoginFragment.this.emailInput.setError(getString(R.string.invalid_email_address));
-        } else {
-            LoginFragment.this.emailInput.setError(null);
-        }
+    private void controle() {
+        if (this.email.isEmpty())
+            this.emailInput.setError(getString(R.string.required_field));
+        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(this.email).matches())
+            this.emailInput.setError(getString(R.string.invalid_email_address));
+        else
+            this.emailInput.setError(null);
 
-        if (mdp.isEmpty()) {
-            LoginFragment.this.mdpInput.setError(getString(R.string.required_field));
-        } else {
-            LoginFragment.this.mdpInput.setError(null);
-        }
+        if (this.mdp.isEmpty())
+            this.mdpInput.setError(getString(R.string.required_field));
+        else
+            this.mdpInput.setError(null);
     }
 
     private void init(View v) {
@@ -166,6 +171,9 @@ public class LoginFragment extends Fragment {
         this.button = v.findViewById(R.id.button);
         this.error = v.findViewById(R.id.error);
         this.error.setVisibility(View.GONE);
+        this.isSubmitted = false;
+        this.email = "";
+        this.mdp = "";
     }
 
 }

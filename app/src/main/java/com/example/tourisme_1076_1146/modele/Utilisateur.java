@@ -14,10 +14,6 @@ public class Utilisateur {
         this.mdp = mdp;
     }
 
-    public static Utilisateur inscription(Utilisateur utilisateur) {
-        return utilisateur;
-    }
-
     public String getId() {
         return id;
     }

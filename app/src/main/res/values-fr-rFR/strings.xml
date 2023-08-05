@@ -31,4 +31,6 @@
     <string name="theme">Thème</string>
     <string name="dark">Sombre</string>
     <string name="light">Clair</string>
+    <string name="user_not_found">Utilisateur non trouvé</string>
+    <string name="incorrect_password">Mot de passe incorrect</string>
 </resources>

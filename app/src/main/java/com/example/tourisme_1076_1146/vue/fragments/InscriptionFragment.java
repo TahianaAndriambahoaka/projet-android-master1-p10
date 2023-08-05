@@ -2,12 +2,15 @@ package com.example.tourisme_1076_1146.vue.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -24,7 +27,14 @@ public class InscriptionFragment extends Fragment {
     private TextInputLayout mdp1Input;
     private TextInputLayout mdp2Input;
     private Button button;
+    private Button error;
     private TextView link;
+    private boolean isSubmitted;
+    private String nom;
+    private String prenom;
+    private String email;
+    private String mdp1;
+    private String mdp2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,6 +42,86 @@ public class InscriptionFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_inscription, container, false);
 
         this.init(v);
+
+        this.nomInput.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                InscriptionFragment.this.error.setVisibility(View.GONE);
+                InscriptionFragment.this.nom = InscriptionFragment.this.nomInput.getEditText().getText().toString().trim();
+                if (InscriptionFragment.this.isSubmitted)
+                    InscriptionFragment.this.controle();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        this.prenomInput.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                InscriptionFragment.this.error.setVisibility(View.GONE);
+                InscriptionFragment.this.prenom = InscriptionFragment.this.prenomInput.getEditText().getText().toString().trim();
+                if (InscriptionFragment.this.isSubmitted)
+                    InscriptionFragment.this.controle();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        this.emailInput.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                InscriptionFragment.this.error.setVisibility(View.GONE);
+                InscriptionFragment.this.email = InscriptionFragment.this.emailInput.getEditText().getText().toString().trim();
+                if (InscriptionFragment.this.isSubmitted)
+                    InscriptionFragment.this.controle();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        this.mdp1Input.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                InscriptionFragment.this.error.setVisibility(View.GONE);
+                InscriptionFragment.this.mdp1 = InscriptionFragment.this.mdp1Input.getEditText().getText().toString().trim();
+                if (InscriptionFragment.this.isSubmitted)
+                    InscriptionFragment.this.controle();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        this.mdp2Input.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                InscriptionFragment.this.error.setVisibility(View.GONE);
+                InscriptionFragment.this.mdp2 = InscriptionFragment.this.mdp2Input.getEditText().getText().toString().trim();
+                if (InscriptionFragment.this.isSubmitted)
+                    InscriptionFragment.this.controle();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
 
         this.link.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,26 +137,15 @@ public class InscriptionFragment extends Fragment {
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InscriptionFragment.this.isSubmitted = true;
                 InscriptionFragment.this.button.setText(getString(R.string.loading));
 
-                String nom = InscriptionFragment.this.nomInput.getEditText().getText().toString().trim();
-                String prenom = InscriptionFragment.this.prenomInput.getEditText().getText().toString().trim();
-                String email = InscriptionFragment.this.emailInput.getEditText().getText().toString().trim();
-                String mdp1 = InscriptionFragment.this.mdp1Input.getEditText().getText().toString().trim();
-                String mdp2 = InscriptionFragment.this.mdp2Input.getEditText().getText().toString().trim();
-
-                InscriptionFragment.this.controle(nom, prenom, email, mdp1, mdp2);
+                InscriptionFragment.this.controle();
 
                 if (InscriptionFragment.this.isOK())
-                    InscriptionFragment.this.inscription(nom, prenom, email, mdp1);
-
-                InscriptionFragment.this.button.setText(getString(R.string.sign_up));
-
-                if (InscriptionFragment.this.isOK()) {
-                    Intent intent = new Intent(getActivity(), ListeActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();
-                }
+                    InscriptionFragment.this.inscription(nom, prenom, email, mdp1, mdp2);
+                else
+                    InscriptionFragment.this.button.setText(getString(R.string.sign_up));
             }
         });
 
@@ -77,58 +156,94 @@ public class InscriptionFragment extends Fragment {
         return  InscriptionFragment.this.nomInput.getError()==null && InscriptionFragment.this.prenomInput.getError()==null && InscriptionFragment.this.emailInput.getError()==null && InscriptionFragment.this.mdp1Input.getError()==null && InscriptionFragment.this.mdp2Input.getError()==null;
     }
 
-    private void inscription(String nom, String prenom, String email, String mdp) {
-        Controleur controleur = Controleur.getInstance();
-        Utilisateur utilisateur = controleur.inscription(nom, prenom, email, mdp);
-        if (utilisateur==null) {
-            InscriptionFragment.this.nomInput.setError(getString(R.string.sign_up_error));
-            InscriptionFragment.this.prenomInput.setError(getString(R.string.sign_up_error));
-            InscriptionFragment.this.emailInput.setError(getString(R.string.sign_up_error));
-            InscriptionFragment.this.mdp1Input.setError(getString(R.string.sign_up_error));
-            InscriptionFragment.this.mdp2Input.setError(getString(R.string.sign_up_error));
+    private void inscription(String nom, String prenom, String email, String mdp1, String mdp2) {
+
+        try {
+            Controleur.getInstance().inscription(nom, prenom, email, mdp1, mdp2, new Controleur.CallbackWS() {
+                @Override
+                public void onSuccess(String token) {
+                    InscriptionFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            InscriptionFragment.this.button.setText(getString(R.string.sign_up));
+                            Intent intent = new Intent(InscriptionFragment.this.getActivity(), ListeActivity.class);
+                            InscriptionFragment.this.startActivity(intent);
+                            InscriptionFragment.this.getActivity().finish();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(String err) {
+                    InscriptionFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            InscriptionFragment.this.nomInput.setError(getString(R.string.sign_up_error));
+                            InscriptionFragment.this.prenomInput.setError(getString(R.string.sign_up_error));
+                            InscriptionFragment.this.emailInput.setError(getString(R.string.sign_up_error));
+                            InscriptionFragment.this.mdp1Input.setError(getString(R.string.sign_up_error));
+                            InscriptionFragment.this.mdp2Input.setError(getString(R.string.sign_up_error));
+                            InscriptionFragment.this.button.setText(getString(R.string.sign_up));
+                            InscriptionFragment.this.error.setText(err);
+                            InscriptionFragment.this.error.setVisibility(View.VISIBLE);
+                            InscriptionFragment.this.error.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pink));
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            InscriptionFragment.this.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    InscriptionFragment.this.nomInput.setError(getString(R.string.sign_up_error));
+                    InscriptionFragment.this.prenomInput.setError(getString(R.string.sign_up_error));
+                    InscriptionFragment.this.emailInput.setError(getString(R.string.sign_up_error));
+                    InscriptionFragment.this.mdp1Input.setError(getString(R.string.sign_up_error));
+                    InscriptionFragment.this.mdp2Input.setError(getString(R.string.sign_up_error));
+                    InscriptionFragment.this.button.setText(getString(R.string.sign_up));
+                    InscriptionFragment.this.error.setText(e.getMessage());
+                    InscriptionFragment.this.error.setVisibility(View.VISIBLE);
+                    InscriptionFragment.this.error.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pink));
+                }
+            });
         }
     }
 
-    private void controle(String nom, String prenom, String email, String mdp1, String mdp2) {
-        if (nom.isEmpty()) {
-            InscriptionFragment.this.nomInput.setError(getString(R.string.required_field));
-        } else {
-            InscriptionFragment.this.nomInput.setError(null);
-        }
+    private void controle() {
+        if (this.nom.isEmpty())
+            this.nomInput.setError(getString(R.string.required_field));
+        else
+            this.nomInput.setError(null);
 
-        if (prenom.isEmpty()) {
-            InscriptionFragment.this.prenomInput.setError(getString(R.string.required_field));
-        } else {
-            InscriptionFragment.this.prenomInput.setError(null);
-        }
+        if (this.prenom.isEmpty())
+            this.prenomInput.setError(getString(R.string.required_field));
+        else
+            this.prenomInput.setError(null);
 
-        if (email.isEmpty()) {
-            InscriptionFragment.this.emailInput.setError(getString(R.string.required_field));
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            InscriptionFragment.this.emailInput.setError(getString(R.string.invalid_email_address));
-        } else {
-            InscriptionFragment.this.emailInput.setError(null);
-        }
+        if (this.email.isEmpty())
+            this.emailInput.setError(getString(R.string.required_field));
+        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(this.email).matches())
+            this.emailInput.setError(getString(R.string.invalid_email_address));
+        else
+            this.emailInput.setError(null);
 
-        if (mdp1.isEmpty()) {
-            InscriptionFragment.this.mdp1Input.setError(getString(R.string.required_field));
-        } else {
-            InscriptionFragment.this.mdp1Input.setError(null);
-        }
+        if (this.mdp1.isEmpty())
+            this.mdp1Input.setError(getString(R.string.required_field));
+        else
+            this.mdp1Input.setError(null);
 
-        if (mdp2.isEmpty()) {
-            InscriptionFragment.this.mdp2Input.setError(getString(R.string.required_field));
-        } else {
-            InscriptionFragment.this.mdp2Input.setError(null);
-        }
+        if (this.mdp2.isEmpty())
+            this.mdp2Input.setError(getString(R.string.required_field));
+        else
+            this.mdp2Input.setError(null);
 
-        if (!mdp1.isEmpty() && !mdp2.isEmpty()) {
-            if (!mdp1.equals(mdp2)) {
-                InscriptionFragment.this.mdp1Input.setError(getString(R.string.different_passwords));
-                InscriptionFragment.this.mdp2Input.setError(getString(R.string.different_passwords));
+        if (!this.mdp1.isEmpty() && !this.mdp2.isEmpty()) {
+            if (!this.mdp1.equals(this.mdp2)) {
+                this.mdp1Input.setError(getString(R.string.different_passwords));
+                this.mdp2Input.setError(getString(R.string.different_passwords));
             } else {
-                InscriptionFragment.this.mdp1Input.setError(null);
-                InscriptionFragment.this.mdp2Input.setError(null);
+                this.mdp1Input.setError(null);
+                this.mdp2Input.setError(null);
             }
         }
     }
@@ -140,6 +255,14 @@ public class InscriptionFragment extends Fragment {
         this.mdp1Input = v.findViewById(R.id.mdp1Input);
         this.mdp2Input = v.findViewById(R.id.mdp2Input);
         this.button = v.findViewById(R.id.button);
+        this.error = v.findViewById(R.id.error);
         this.link = v.findViewById(R.id.link);
+        this.error.setVisibility(View.GONE);
+        this.isSubmitted = false;
+        this.nom = "";
+        this.prenom = "";
+        this.email = "";
+        this.mdp1 = "";
+        this.mdp2 = "";
     }
 }
