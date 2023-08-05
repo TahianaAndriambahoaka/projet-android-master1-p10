@@ -41,6 +41,13 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String savedLanguage = LanguagePreference.getLanguage(this);
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        configuration.setLocale(new Locale(savedLanguage));
+        resources.updateConfiguration(configuration, displayMetrics);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste);
         setTitle(getString(R.string.list_of_activities));
