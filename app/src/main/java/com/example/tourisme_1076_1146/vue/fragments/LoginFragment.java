@@ -2,18 +2,23 @@ package com.example.tourisme_1076_1146.vue.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.tourisme_1076_1146.R;
 import com.example.tourisme_1076_1146.controleur.Controleur;
-import com.example.tourisme_1076_1146.modele.Utilisateur;
 import com.example.tourisme_1076_1146.vue.activities.ListeActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -21,6 +26,7 @@ public class LoginFragment extends Fragment {
     private TextInputLayout emailInput;
     private TextInputLayout mdpInput;
     private Button button;
+    private Button error;
     private TextView link;
 
     @Override
@@ -29,6 +35,32 @@ public class LoginFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
         this.init(v);
+
+        this.emailInput.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                LoginFragment.this.error.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        this.mdpInput.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                LoginFragment.this.error.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
 
         this.link.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,14 +85,6 @@ public class LoginFragment extends Fragment {
 
                 if (LoginFragment.this.isOK())
                     LoginFragment.this.authentification(email, mdp);
-
-                LoginFragment.this.button.setText(getString(R.string.connect));
-
-                if (LoginFragment.this.isOK()) {
-                    Intent intent = new Intent(getActivity(), ListeActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();
-                }
             }
         });
 
@@ -72,13 +96,52 @@ public class LoginFragment extends Fragment {
     }
 
     private void authentification(String email, String mdp) {
-        Controleur controleur = Controleur.getInstance();
-        Utilisateur utilisateur = controleur.authentification(email, mdp);
-        if (utilisateur==null) {
-            LoginFragment.this.emailInput.setError(getString(R.string.authentication_error));
-            LoginFragment.this.mdpInput.setError(getString(R.string.authentication_error));
+        try {
+            Controleur.getInstance().authentification(email, mdp, new Controleur.AuthentificationCallback() {
+                @Override
+                public void onSuccess(String token) {
+                    LoginFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LoginFragment.this.button.setText(getString(R.string.connect));
+                            LoginFragment.this.error.setVisibility(View.GONE);
+                            Intent intent = new Intent(LoginFragment.this.getActivity(), ListeActivity.class);
+                            LoginFragment.this.startActivity(intent);
+                            LoginFragment.this.getActivity().finish();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(String err) {
+                    LoginFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LoginFragment.this.button.setText(getString(R.string.connect));
+                            LoginFragment.this.error.setText(err);
+                            LoginFragment.this.error.setVisibility(View.VISIBLE);
+                            LoginFragment.this.error.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pink));
+                            LoginFragment.this.emailInput.setError(getString(R.string.authentication_error));
+                            LoginFragment.this.mdpInput.setError(getString(R.string.authentication_error));
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            LoginFragment.this.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    LoginFragment.this.button.setText(getString(R.string.connect));
+                    LoginFragment.this.error.setText(e.getMessage());
+                    LoginFragment.this.error.setVisibility(View.VISIBLE);
+                    LoginFragment.this.error.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pink));
+                    LoginFragment.this.emailInput.setError(getString(R.string.authentication_error));
+                    LoginFragment.this.mdpInput.setError(getString(R.string.authentication_error));
+                }
+            });
         }
     }
+
 
     private void controle(String email, String mdp) {
         if (email.isEmpty()) {
@@ -101,6 +164,8 @@ public class LoginFragment extends Fragment {
         this.mdpInput = v.findViewById(R.id.mdpInput);
         this.link = v.findViewById(R.id.link);
         this.button = v.findViewById(R.id.button);
+        this.error = v.findViewById(R.id.error);
+        this.error.setVisibility(View.GONE);
     }
 
 }

@@ -3,7 +3,19 @@ package com.example.tourisme_1076_1146.controleur;
 import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 import com.example.tourisme_1076_1146.modele.Utilisateur;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public final class Controleur {
 
@@ -21,8 +33,52 @@ public final class Controleur {
         return Utilisateur.inscription(new Utilisateur(nom, prenom, email, mdp));
     }
 
-    public Utilisateur authentification(String email, String mdp) {
-        return Utilisateur.authentification(new Utilisateur(null, null, email, mdp));
+
+    public interface AuthentificationCallback {
+        void onSuccess(String token);
+        void onFailure(String error);
+    }
+
+    public static void authentification(String email, String mdp, AuthentificationCallback callback) throws Exception {
+        try {
+            RequestBody body = new FormBody.Builder()
+                    .add("email", email)
+                    .add("password", mdp)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url("https://android-back-m1.vercel.app/users/login")
+                    .post(body)
+                    .build();
+
+            new OkHttpClient().newCall(request).enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    JSONObject jsonResponse = null;
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                    } catch (JSONException e) {
+                        callback.onFailure(e.getMessage());
+                    }
+                    try {
+                        callback.onSuccess(jsonResponse.getString("token"));
+                    } catch (JSONException e) {
+                        try {
+                            callback.onFailure(jsonResponse.getString("message"));
+                        } catch (JSONException ex) {
+                            callback.onFailure(ex.getMessage());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    callback.onFailure(e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     public static final Controleur getInstance() {

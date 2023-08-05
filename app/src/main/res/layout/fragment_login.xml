@@ -66,6 +66,16 @@
             android:text="@string/connect"
             app:cornerRadius="5dp" />
 
+        <Button
+            android:id="@+id/error"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:text="error"
+            android:textColor="@color/red"
+            app:cornerRadius="5dp" />
+
         <TextView
             android:id="@+id/link"
             android:layout_width="match_parent"

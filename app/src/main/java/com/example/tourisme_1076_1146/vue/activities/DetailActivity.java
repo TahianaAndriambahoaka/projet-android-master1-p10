@@ -40,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String videoUrl = this.activiteTouristique.getVideoURL();
+//        videoUrl = "https://l.facebook.com/l.php?u=https%3A%2F%2Fcdn.videvo.net%2Fvidevo_files%2Fvideo%2Fpremium%2Fvideo0394%2Flarge_watermarked%2F902-1_902-0408-PD2_preview.mp4%3Ffbclid%3DIwAR3erlN5rhPhxvBny-SQ7H9n6-W0H5Sfj0-eVECI74ImSyBlSFL40vcKW_I&h=AT0XFVyT19SF6DC0biLpKOdpo8EHN-1OProVoW2IViR6WXZcLqX0cGi3GlsFQqgWbbVTOh1jLOsMPfkcftSQSev5g7QF44OO9sKaxKeqIu1f7LP-KhX3GQUD7xD8KCohRQtxKw";
         WebView webView = findViewById(R.id.videoView);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);

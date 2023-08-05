@@ -18,17 +18,6 @@ public class Utilisateur {
         return utilisateur;
     }
 
-    public static Utilisateur authentification(Utilisateur utilisateur) {
-        Utilisateur u = null;
-
-        Utilisateur temp = new Utilisateur("coco", "rico", "coco@rico.co", "cocorico");
-        if (utilisateur.email.equals(temp.email) && utilisateur.mdp.equals(temp.mdp)) {
-            u = temp;
-        }
-
-        return u;
-    }
-
     public String getId() {
         return id;
     }
