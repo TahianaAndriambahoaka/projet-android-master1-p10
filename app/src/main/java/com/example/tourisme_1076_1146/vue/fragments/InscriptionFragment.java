@@ -178,13 +178,22 @@ public class InscriptionFragment extends Fragment {
                     InscriptionFragment.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            InscriptionFragment.this.nomInput.setError(getString(R.string.sign_up_error));
-                            InscriptionFragment.this.prenomInput.setError(getString(R.string.sign_up_error));
-                            InscriptionFragment.this.emailInput.setError(getString(R.string.sign_up_error));
-                            InscriptionFragment.this.mdp1Input.setError(getString(R.string.sign_up_error));
-                            InscriptionFragment.this.mdp2Input.setError(getString(R.string.sign_up_error));
+                            if (err.equals("Cette adresse e-mail est déjà utilisée")) {
+                                InscriptionFragment.this.emailInput.setError(getString(R.string.email_already_used));
+                                InscriptionFragment.this.error.setText(getString(R.string.email_already_used));
+                            } else if (err.equals("Les mots de passe ne correspondent pas")) {
+                                InscriptionFragment.this.mdp1Input.setError(getString(R.string.passwords_do_not_match));
+                                InscriptionFragment.this.mdp2Input.setError(getString(R.string.passwords_do_not_match));
+                                InscriptionFragment.this.error.setText(R.string.passwords_do_not_match);
+                            } else {
+                                InscriptionFragment.this.nomInput.setError(getString(R.string.sign_up_error));
+                                InscriptionFragment.this.prenomInput.setError(getString(R.string.sign_up_error));
+                                InscriptionFragment.this.emailInput.setError(getString(R.string.sign_up_error));
+                                InscriptionFragment.this.mdp1Input.setError(getString(R.string.sign_up_error));
+                                InscriptionFragment.this.mdp2Input.setError(getString(R.string.sign_up_error));
+                                InscriptionFragment.this.error.setText(R.string.sign_up_error);
+                            }
                             InscriptionFragment.this.button.setText(getString(R.string.sign_up));
-                            InscriptionFragment.this.error.setText(err);
                             InscriptionFragment.this.error.setVisibility(View.VISIBLE);
                             InscriptionFragment.this.error.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pink));
                         }
@@ -201,7 +210,7 @@ public class InscriptionFragment extends Fragment {
                     InscriptionFragment.this.mdp1Input.setError(getString(R.string.sign_up_error));
                     InscriptionFragment.this.mdp2Input.setError(getString(R.string.sign_up_error));
                     InscriptionFragment.this.button.setText(getString(R.string.sign_up));
-                    InscriptionFragment.this.error.setText(e.getMessage());
+                    InscriptionFragment.this.error.setText(R.string.sign_up_error);
                     InscriptionFragment.this.error.setVisibility(View.VISIBLE);
                     InscriptionFragment.this.error.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pink));
                 }

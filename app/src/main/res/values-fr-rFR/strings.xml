@@ -33,4 +33,6 @@
     <string name="light">Clair</string>
     <string name="user_not_found">Utilisateur non trouvé</string>
     <string name="incorrect_password">Mot de passe incorrect</string>
+    <string name="email_already_used">Adresse email déjà utilisée</string>
+    <string name="passwords_do_not_match">Les mots de passe ne correspondent pas</string>
 </resources>

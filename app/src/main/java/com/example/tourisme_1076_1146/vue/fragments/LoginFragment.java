@@ -124,12 +124,18 @@ public class LoginFragment extends Fragment {
                     LoginFragment.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if (err.equals("Mot de passe incorrect")) {
+                                LoginFragment.this.error.setText(getString(R.string.incorrect_password));
+                                LoginFragment.this.mdpInput.setError(getString(R.string.incorrect_password));
+                            }
+                            else {
+                                LoginFragment.this.error.setText(getString(R.string.user_not_found));
+                                LoginFragment.this.emailInput.setError(getString(R.string.user_not_found));
+                                LoginFragment.this.mdpInput.setError(getString(R.string.user_not_found));
+                            }
                             LoginFragment.this.button.setText(getString(R.string.connect));
-                            LoginFragment.this.error.setText(err);
                             LoginFragment.this.error.setVisibility(View.VISIBLE);
                             LoginFragment.this.error.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pink));
-                            LoginFragment.this.emailInput.setError(getString(R.string.authentication_error));
-                            LoginFragment.this.mdpInput.setError(getString(R.string.authentication_error));
                         }
                     });
                 }
@@ -139,7 +145,7 @@ public class LoginFragment extends Fragment {
                 @Override
                 public void run() {
                     LoginFragment.this.button.setText(getString(R.string.connect));
-                    LoginFragment.this.error.setText(e.getMessage());
+                    LoginFragment.this.error.setText(R.string.authentication_error);
                     LoginFragment.this.error.setVisibility(View.VISIBLE);
                     LoginFragment.this.error.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pink));
                     LoginFragment.this.emailInput.setError(getString(R.string.authentication_error));

@@ -32,4 +32,7 @@
     <string name="dark">Dark</string>
     <string name="light">Light</string>
     <string name="user_not_found">User not found</string>
+    <string name="incorrect_password">Incorrect password</string>
+    <string name="email_already_used">Email address already used</string>
+    <string name="passwords_do_not_match">Passwords don\'t match</string>
 </resources>
