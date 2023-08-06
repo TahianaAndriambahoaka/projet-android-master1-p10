@@ -27,10 +27,12 @@ public final class Controleur {
 
     private static Controleur instance = null;
     private static Context context;
+    public static boolean mustReload;
 
     private Controleur(Context context) {
         super();
         this.context = context;
+        this.mustReload = false;
     }
 
     public interface CallbackWebServiceEvaluation {

@@ -164,6 +164,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void vote(int vote) {
+        Controleur.getInstance(this).mustReload = true;
         try {
             Controleur.evaluation(this.activiteTouristique.getId(), vote, new Controleur.CallbackWebServiceEvaluation() {
                 @Override

@@ -100,6 +100,15 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (Controleur.getInstance(this).mustReload) {
+            swipeRefreshLayout.setRefreshing(true);
+            this.loadData(true);
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("reloaded", true);
@@ -173,7 +182,9 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
                                 addActiviteTouristiqueFragment(new ActiviteTouristiqueFragment(liste.get(i), evaluations.get(i)));
                             ListeActivity.this.loading.setVisibility(View.GONE);
                             if (reload)
-                                swipeRefreshLayout.setRefreshing(false);
+                                ListeActivity.this.swipeRefreshLayout.setRefreshing(false);
+                            if (Controleur.getInstance(ListeActivity.this).mustReload)
+                                Controleur.getInstance(ListeActivity.this).mustReload = false;
                         }
                     });
                 }
@@ -186,7 +197,9 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
                             Toast.makeText(ListeActivity.this, err, Toast.LENGTH_SHORT).show();
                             ListeActivity.this.loading.setVisibility(View.GONE);
                             if (reload)
-                                swipeRefreshLayout.setRefreshing(false);
+                                ListeActivity.this.swipeRefreshLayout.setRefreshing(false);
+                            if (Controleur.getInstance(ListeActivity.this).mustReload)
+                                Controleur.getInstance(ListeActivity.this).mustReload = false;
                         }
                     });
                 }
@@ -198,7 +211,9 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
                     Toast.makeText(ListeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     ListeActivity.this.loading.setVisibility(View.GONE);
                     if (reload)
-                        swipeRefreshLayout.setRefreshing(false);
+                        ListeActivity.this.swipeRefreshLayout.setRefreshing(false);
+                    if (Controleur.getInstance(ListeActivity.this).mustReload)
+                        Controleur.getInstance(ListeActivity.this).mustReload = false;
                 }
             });
         }
