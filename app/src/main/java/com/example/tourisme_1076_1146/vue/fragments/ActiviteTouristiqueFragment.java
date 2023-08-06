@@ -16,15 +16,19 @@ import com.example.tourisme_1076_1146.R;
 import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 import com.example.tourisme_1076_1146.vue.activities.DetailActivity;
 
+import java.util.List;
+
 public class ActiviteTouristiqueFragment extends Fragment {
     private ActiviteTouristique activiteTouristique;
+    private Integer evaluation;
 
     public ActiviteTouristiqueFragment() {
         super();
     }
 
-    public ActiviteTouristiqueFragment(ActiviteTouristique activiteTouristique) {
+    public ActiviteTouristiqueFragment(ActiviteTouristique activiteTouristique, Integer evaluation) {
         this.activiteTouristique = activiteTouristique;
+        this.evaluation = evaluation;
     }
 
     @Override
@@ -32,6 +36,7 @@ public class ActiviteTouristiqueFragment extends Fragment {
                              Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             this.activiteTouristique = (ActiviteTouristique) savedInstanceState.getSerializable("activite_touristique");
+            this.evaluation = savedInstanceState.getInt("evaluation");
         }
 
         View v = inflater.inflate(R.layout.fragment_activite_touristique, container, false);
@@ -80,6 +85,7 @@ public class ActiviteTouristiqueFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("data", ActiviteTouristiqueFragment.this.activiteTouristique);
+                intent.putExtra("evaluation", ActiviteTouristiqueFragment.this.evaluation);
                 startActivity(intent);
             }
         });
@@ -91,5 +97,6 @@ public class ActiviteTouristiqueFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("activite_touristique", this.activiteTouristique);
+        outState.putInt("evaluation", this.evaluation);
     }
 }

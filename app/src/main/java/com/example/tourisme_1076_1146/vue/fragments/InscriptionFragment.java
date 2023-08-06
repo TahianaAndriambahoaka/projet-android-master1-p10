@@ -1,6 +1,7 @@
 package com.example.tourisme_1076_1146.vue.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.example.tourisme_1076_1146.R;
 import com.example.tourisme_1076_1146.controleur.Controleur;
@@ -158,9 +160,9 @@ public class InscriptionFragment extends Fragment {
     private void inscription(String nom, String prenom, String email, String mdp1, String mdp2) {
 
         try {
-            Controleur.getInstance().inscription(nom, prenom, email, mdp1, mdp2, new Controleur.CallbackWebServiceLoginInscription() {
+            Controleur.getInstance(getContext()).inscription(nom, prenom, email, mdp1, mdp2, new Controleur.CallbackWebServiceLoginInscription() {
                 @Override
-                public void onSuccess(String token) {
+                public void onSuccess() {
                     InscriptionFragment.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

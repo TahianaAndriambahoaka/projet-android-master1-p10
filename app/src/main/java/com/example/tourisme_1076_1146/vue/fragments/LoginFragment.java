@@ -1,6 +1,7 @@
 package com.example.tourisme_1076_1146.vue.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.example.tourisme_1076_1146.R;
 import com.example.tourisme_1076_1146.controleur.Controleur;
@@ -102,9 +104,9 @@ public class LoginFragment extends Fragment {
 
     private void authentification() {
         try {
-            Controleur.getInstance().authentification(this.email, this.mdp, new Controleur.CallbackWebServiceLoginInscription() {
+            Controleur.getInstance(getContext()).authentification(this.email, this.mdp, new Controleur.CallbackWebServiceLoginInscription() {
                 @Override
-                public void onSuccess(String token) {
+                public void onSuccess() {
                     LoginFragment.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

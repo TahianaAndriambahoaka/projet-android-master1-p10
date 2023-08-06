@@ -1,5 +1,10 @@
 package com.example.tourisme_1076_1146.controleur;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.preference.PreferenceManager;
+
 import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 
 import org.json.JSONArray;
@@ -21,13 +26,58 @@ import okhttp3.Response;
 public final class Controleur {
 
     private static Controleur instance = null;
+    private static Context context;
 
-    private Controleur() {
+    private Controleur(Context context) {
         super();
+        this.context = context;
+    }
+
+    public interface CallbackWebServiceEvaluation {
+        void onSuccess();
+        void onFailure(String error);
+    }
+
+    public static void evaluation(String idActivite, int vote, CallbackWebServiceEvaluation callback) throws Exception {
+        try {
+            RequestBody body = new FormBody.Builder()
+                    .add("vote", Integer.toString(vote))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url("https://android-back-m1.vercel.app/activities/"+idActivite+"/vote")
+                    .put(body)
+                    .header("x-auth-token", PreferenceManager.getDefaultSharedPreferences(Controleur.context).getString("token", ""))
+                    .build();
+
+            new OkHttpClient().newCall(request).enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    JSONObject jsonResponse = null;
+                    try {
+                        jsonResponse = new JSONObject(response.body().string());
+                        String message = jsonResponse.getString("message");
+                        if (message.equals("Vote updated successfully"))
+                            callback.onSuccess();
+                        else
+                            callback.onFailure(message);
+                    } catch (JSONException e) {
+                        callback.onFailure(e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    callback.onFailure(e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     public interface CallbackWebServiceGetAllActiviteTouristique {
-        void onSuccess(List<ActiviteTouristique> liste);
+        void onSuccess(List<ActiviteTouristique> liste, List<Integer> evaluations);
         void onFailure(String error);
     }
 
@@ -36,13 +86,14 @@ public final class Controleur {
             Request request = new Request.Builder()
                     .url("https://android-back-m1.vercel.app/activities/")
                     .get()
-                    .header("x-auth-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2U0MjRiNTYyM2IyMGM3MmU5YmRhYSIsImlhdCI6MTY5MTMyMDk3NywiZXhwIjoxNjkxNDA3Mzc3fQ.kkCt1DnRWaWXgSw5oZnPrVfcW3Pv8PP0BLWoBkSmprY")
+                    .header("x-auth-token", PreferenceManager.getDefaultSharedPreferences(Controleur.context).getString("token", ""))
                     .build();
 
             new OkHttpClient().newCall(request).enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     List<ActiviteTouristique> liste = new ArrayList<>();
+                    List<Integer> evaluations = new ArrayList<>();
                     try {
                         JSONArray jsonArray = new JSONArray(response.body().string());
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -59,8 +110,21 @@ public final class Controleur {
                                 imagesURL.add(imagesArray.getString(j));
                             ActiviteTouristique activiteTouristique = new ActiviteTouristique(id, titre, description, nbEtoiles, nbVotes, videoURL, imagesURL);
                             liste.add(activiteTouristique);
+                            JSONArray etoilesArray = jsonObject.getJSONArray("etoiles");
+                            int etoileNumber = 0;
+                            for (int j = 0; j < etoilesArray.length(); j++) {
+                                JSONArray etoileElement = etoilesArray.getJSONArray(j);
+                                String userID = etoileElement.getString(0);
+                                if (userID.equals(PreferenceManager.getDefaultSharedPreferences(Controleur.context).getString("id", ""))) {
+                                    JSONObject etoileValue = etoileElement.getJSONObject(1);
+                                    etoileNumber = etoileValue.getInt("$numberInt");
+                                    evaluations.add(etoileNumber);
+                                    break;
+                                }
+                            }
+                            evaluations.add(etoileNumber);
                         }
-                        callback.onSuccess(liste);
+                        callback.onSuccess(liste, evaluations);
                     } catch (JSONException e) {
                         callback.onFailure(e.getMessage());
                     }
@@ -77,7 +141,7 @@ public final class Controleur {
     }
 
     public interface CallbackWebServiceLoginInscription {
-        void onSuccess(String token);
+        void onSuccess();
         void onFailure(String error);
     }
 
@@ -106,7 +170,14 @@ public final class Controleur {
                         callback.onFailure(e.getMessage());
                     }
                     try {
-                        callback.onSuccess(jsonResponse.getString("token"));
+                        String id = jsonResponse.getJSONObject("user").getString("_id");
+                        String token = jsonResponse.getString("token");
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Controleur.context);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("id", id);
+                        editor.putString("token", token);
+                        editor.apply();
+                        callback.onSuccess();
                     } catch (JSONException e) {
                         try {
                             callback.onFailure(jsonResponse.getString("message"));
@@ -148,7 +219,14 @@ public final class Controleur {
                         callback.onFailure(e.getMessage());
                     }
                     try {
-                        callback.onSuccess(jsonResponse.getString("token"));
+                        String id = jsonResponse.getJSONObject("user").getString("_id");
+                        String token = jsonResponse.getString("token");
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Controleur.context);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("id", id);
+                        editor.putString("token", token);
+                        editor.apply();
+                        callback.onSuccess();
                     } catch (JSONException e) {
                         try {
                             callback.onFailure(jsonResponse.getString("message"));
@@ -168,10 +246,11 @@ public final class Controleur {
         }
     }
 
-    public static final Controleur getInstance() {
+    public static final Controleur getInstance(Context context) {
         if (Controleur.instance == null) {
-            Controleur.instance = new Controleur();
+            Controleur.instance = new Controleur(context);
         }
+        Controleur.context = context;
         return Controleur.instance;
     }
 }

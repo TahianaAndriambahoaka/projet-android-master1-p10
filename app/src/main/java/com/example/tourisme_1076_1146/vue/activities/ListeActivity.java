@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.tourisme_1076_1146.R;
@@ -33,11 +37,14 @@ import com.example.tourisme_1076_1146.vue.fragments.ActiviteTouristiqueFragment;
 import com.example.tourisme_1076_1146.vue.fragments.LoginFragment;
 import com.example.tourisme_1076_1146.vue.fragments.RechercheFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class ListeActivity extends AppCompatActivity implements RechercheFragment.OnSearchSubmitListener {
-
+;
+    SwipeRefreshLayout swipeRefreshLayout;
+    LinearLayout containerLayout;
     ImageView loading;
 
     @Override
@@ -60,6 +67,8 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
         setTitle(getString(R.string.list_of_activities));
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.action_bar));
 
+        this.containerLayout = findViewById(R.id.containerLayout);
+
         this.loading = findViewById(R.id.loading);
         this.loading.setImageResource(R.drawable.loading_night);
         if (ThemePreference.getThemeMode(this).equals("DARK"))
@@ -76,48 +85,18 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
             fragmentTransaction.add(R.id.searchLayout, rechercheFragment);
             fragmentTransaction.commit();
 
-
-            try {
-                Controleur.getAllActiviteTouristique(new Controleur.CallbackWebServiceGetAllActiviteTouristique() {
-                    @Override
-                    public void onSuccess(List<ActiviteTouristique> liste) {
-                        ListeActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                for (int i = 0; i < liste.size(); i++)
-                                    addActiviteTouristiqueFragment(new ActiviteTouristiqueFragment(liste.get(i)));
-                                ListeActivity.this.loading.setVisibility(View.GONE);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(String err) {
-                        ListeActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(ListeActivity.this, err, Toast.LENGTH_SHORT).show();
-                                ListeActivity.this.loading.setVisibility(View.GONE);
-                            }
-                        });
-                    }
-                });
-            } catch (Exception e) {
-                ListeActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(ListeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        ListeActivity.this.loading.setVisibility(View.GONE);
-                    }
-                });
-            }
-
-
-
+            this.loadData(false);
         } else
             ListeActivity.this.loading.setVisibility(View.GONE);
 
 
+        this.swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ListeActivity.this.loadData(true);
+            }
+        });
     }
 
     @Override
@@ -174,6 +153,57 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void loadData(boolean reload) {
+        try {
+            Controleur.getAllActiviteTouristique(new Controleur.CallbackWebServiceGetAllActiviteTouristique() {
+                @Override
+                public void onSuccess(List<ActiviteTouristique> liste, List<Integer> evaluations) {
+                    ListeActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (reload) {
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                for (Fragment fragment : fragmentManager.getFragments()) {
+                                    if (fragment != null && fragment.getView() != null && fragment.getView().getParent() == ListeActivity.this.containerLayout)
+                                        fragmentManager.beginTransaction().remove(fragment).commit();
+                                }
+                            }
+                            for (int i = 0; i < liste.size(); i++)
+                                addActiviteTouristiqueFragment(new ActiviteTouristiqueFragment(liste.get(i), evaluations.get(i)));
+                            ListeActivity.this.loading.setVisibility(View.GONE);
+                            if (reload)
+                                swipeRefreshLayout.setRefreshing(false);
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(String err) {
+                    ListeActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ListeActivity.this, err, Toast.LENGTH_SHORT).show();
+                            ListeActivity.this.loading.setVisibility(View.GONE);
+                            if (reload)
+                                swipeRefreshLayout.setRefreshing(false);
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            ListeActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ListeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    ListeActivity.this.loading.setVisibility(View.GONE);
+                    if (reload)
+                        swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        }
+    }
+
 
     private void addActiviteTouristiqueFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();

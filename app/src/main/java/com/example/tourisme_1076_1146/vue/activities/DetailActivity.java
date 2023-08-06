@@ -6,11 +6,13 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.tourisme_1076_1146.R;
+import com.example.tourisme_1076_1146.controleur.Controleur;
 import com.example.tourisme_1076_1146.controleur.LanguagePreference;
 import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 
@@ -27,7 +30,13 @@ import java.util.List;
 import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
-    ActiviteTouristique activiteTouristique;
+    private ActiviteTouristique activiteTouristique;
+    private Integer evaluation;
+    private ImageView rating1;
+    private ImageView rating2;
+    private ImageView rating3;
+    private ImageView rating4;
+    private ImageView rating5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,19 +49,23 @@ public class DetailActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("data")) {
-            this.activiteTouristique = (ActiviteTouristique) intent.getSerializableExtra("data");
-        }
-
         setTitle(getString(R.string.details));
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.action_bar));
-        // Activer le bouton de retour
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        this.init();
+
+        this.ratingListener();
+
+        if (this.evaluation > 0)  {
+            if (this.evaluation >= 1) ((ImageView) findViewById(R.id.rating1)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+            if (this.evaluation >= 2) ((ImageView) findViewById(R.id.rating2)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+            if (this.evaluation >= 3) ((ImageView) findViewById(R.id.rating3)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+            if (this.evaluation >= 4) ((ImageView) findViewById(R.id.rating4)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+            if ((int)this.evaluation == 5) ((ImageView)findViewById(R.id.rating5)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+        }
+
         String videoUrl = this.activiteTouristique.getVideoURL();
-//        videoUrl = "https://l.facebook.com/l.php?u=https%3A%2F%2Fcdn.videvo.net%2Fvidevo_files%2Fvideo%2Fpremium%2Fvideo0394%2Flarge_watermarked%2F902-1_902-0408-PD2_preview.mp4%3Ffbclid%3DIwAR3erlN5rhPhxvBny-SQ7H9n6-W0H5Sfj0-eVECI74ImSyBlSFL40vcKW_I&h=AT0XFVyT19SF6DC0biLpKOdpo8EHN-1OProVoW2IViR6WXZcLqX0cGi3GlsFQqgWbbVTOh1jLOsMPfkcftSQSev5g7QF44OO9sKaxKeqIu1f7LP-KhX3GQUD7xD8KCohRQtxKw";
         WebView webView = findViewById(R.id.videoView);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -110,5 +123,89 @@ public class DetailActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void ratingListener() {
+        this.rating1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DetailActivity.this, "1", Toast.LENGTH_SHORT).show();
+                DetailActivity.this.vote(1);
+            }
+        });
+        this.rating2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DetailActivity.this, "2", Toast.LENGTH_SHORT).show();
+                DetailActivity.this.vote(2);
+            }
+        });
+        this.rating3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DetailActivity.this, "3", Toast.LENGTH_SHORT).show();
+                DetailActivity.this.vote(3);
+            }
+        });
+        this.rating4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DetailActivity.this, "4", Toast.LENGTH_SHORT).show();
+                DetailActivity.this.vote(4);
+            }
+        });
+        this.rating5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DetailActivity.this, "5", Toast.LENGTH_SHORT).show();
+                DetailActivity.this.vote(5);
+            }
+        });
+    }
+
+    private void vote(int vote) {
+        try {
+            Controleur.evaluation(this.activiteTouristique.getId(), vote, new Controleur.CallbackWebServiceEvaluation() {
+                @Override
+                public void onSuccess() {
+                    DetailActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(DetailActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(String err) {
+                    DetailActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(DetailActivity.this, err, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            DetailActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(DetailActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void init() {
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("data") && intent.hasExtra("evaluation")) {
+            this.activiteTouristique = (ActiviteTouristique) intent.getSerializableExtra("data");
+            this.evaluation = (Integer) intent.getSerializableExtra("evaluation");
+        }
+        this.rating1 = findViewById(R.id.rating1);
+        this.rating2 = findViewById(R.id.rating2);
+        this.rating3 = findViewById(R.id.rating3);
+        this.rating4 = findViewById(R.id.rating4);
+        this.rating5 = findViewById(R.id.rating5);
     }
 }
