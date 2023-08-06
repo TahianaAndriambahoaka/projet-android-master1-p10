@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
@@ -37,6 +38,7 @@ public class DetailActivity extends AppCompatActivity {
     private ImageView rating3;
     private ImageView rating4;
     private ImageView rating5;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,7 @@ public class DetailActivity extends AppCompatActivity {
             if (this.evaluation >= 2) ((ImageView) findViewById(R.id.rating2)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
             if (this.evaluation >= 3) ((ImageView) findViewById(R.id.rating3)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
             if (this.evaluation >= 4) ((ImageView) findViewById(R.id.rating4)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
-            if ((int)this.evaluation == 5) ((ImageView)findViewById(R.id.rating5)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+            if (this.evaluation == 5) ((ImageView)findViewById(R.id.rating5)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
         }
 
         String videoUrl = this.activiteTouristique.getVideoURL();
@@ -129,35 +131,30 @@ public class DetailActivity extends AppCompatActivity {
         this.rating1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "1", Toast.LENGTH_SHORT).show();
                 DetailActivity.this.vote(1);
             }
         });
         this.rating2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "2", Toast.LENGTH_SHORT).show();
                 DetailActivity.this.vote(2);
             }
         });
         this.rating3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "3", Toast.LENGTH_SHORT).show();
                 DetailActivity.this.vote(3);
             }
         });
         this.rating4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "4", Toast.LENGTH_SHORT).show();
                 DetailActivity.this.vote(4);
             }
         });
         this.rating5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "5", Toast.LENGTH_SHORT).show();
                 DetailActivity.this.vote(5);
             }
         });
@@ -165,6 +162,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void vote(int vote) {
         Controleur.getInstance(this).mustReload = true;
+        DetailActivity.this.swipeRefreshLayout.setRefreshing(true);
         try {
             Controleur.evaluation(this.activiteTouristique.getId(), vote, new Controleur.CallbackWebServiceEvaluation() {
                 @Override
@@ -172,7 +170,18 @@ public class DetailActivity extends AppCompatActivity {
                     DetailActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(DetailActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                            DetailActivity.this.evaluation = vote;
+                            DetailActivity.this.swipeRefreshLayout.setRefreshing(false);
+                            ((ImageView) findViewById(R.id.rating1)).setImageResource(R.drawable.ic_baseline_star_outline_24);
+                            ((ImageView) findViewById(R.id.rating2)).setImageResource(R.drawable.ic_baseline_star_outline_24);
+                            ((ImageView) findViewById(R.id.rating3)).setImageResource(R.drawable.ic_baseline_star_outline_24);
+                            ((ImageView) findViewById(R.id.rating4)).setImageResource(R.drawable.ic_baseline_star_outline_24);
+                            ((ImageView) findViewById(R.id.rating5)).setImageResource(R.drawable.ic_baseline_star_outline_24);
+                            if (vote >= 1) ((ImageView) findViewById(R.id.rating1)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+                            if (vote >= 2) ((ImageView) findViewById(R.id.rating2)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+                            if (vote >= 3) ((ImageView) findViewById(R.id.rating3)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+                            if (vote >= 4) ((ImageView) findViewById(R.id.rating4)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+                            if (vote == 5) ((ImageView)findViewById(R.id.rating5)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
                         }
                     });
                 }
@@ -183,6 +192,7 @@ public class DetailActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(DetailActivity.this, err, Toast.LENGTH_SHORT).show();
+                            DetailActivity.this.swipeRefreshLayout.setRefreshing(false);
                         }
                     });
                 }
@@ -192,6 +202,7 @@ public class DetailActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Toast.makeText(DetailActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    DetailActivity.this.swipeRefreshLayout.setRefreshing(false);
                 }
             });
         }
@@ -208,5 +219,7 @@ public class DetailActivity extends AppCompatActivity {
         this.rating3 = findViewById(R.id.rating3);
         this.rating4 = findViewById(R.id.rating4);
         this.rating5 = findViewById(R.id.rating5);
+        this.swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        this.swipeRefreshLayout.setEnabled(false);
     }
 }

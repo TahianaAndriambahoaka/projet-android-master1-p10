@@ -56,35 +56,35 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_baseline_star_rate_gray_24" />
+                            android:src="@drawable/ic_baseline_star_outline_24" />
 
                         <ImageView
                             android:id="@+id/etoile2"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_baseline_star_rate_gray_24" />
+                            android:src="@drawable/ic_baseline_star_outline_24" />
 
                         <ImageView
                             android:id="@+id/etoile3"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_baseline_star_rate_gray_24" />
+                            android:src="@drawable/ic_baseline_star_outline_24" />
 
                         <ImageView
                             android:id="@+id/etoile4"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_baseline_star_rate_gray_24" />
+                            android:src="@drawable/ic_baseline_star_outline_24" />
 
                         <ImageView
                             android:id="@+id/etoile5"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_baseline_star_rate_gray_24" />
+                            android:src="@drawable/ic_baseline_star_outline_24" />
 
                         <TextView
                             android:id="@+id/nbRates"
