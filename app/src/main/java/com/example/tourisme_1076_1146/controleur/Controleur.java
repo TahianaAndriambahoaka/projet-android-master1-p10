@@ -1,7 +1,6 @@
 package com.example.tourisme_1076_1146.controleur;
 
 import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
-import com.example.tourisme_1076_1146.modele.Utilisateur;
 
 import org.json.JSONException;
 import org.json.JSONObject;

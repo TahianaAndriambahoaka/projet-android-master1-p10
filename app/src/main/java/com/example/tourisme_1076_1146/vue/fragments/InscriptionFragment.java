@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.tourisme_1076_1146.R;
 import com.example.tourisme_1076_1146.controleur.Controleur;
-import com.example.tourisme_1076_1146.modele.Utilisateur;
 import com.example.tourisme_1076_1146.vue.activities.ListeActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
