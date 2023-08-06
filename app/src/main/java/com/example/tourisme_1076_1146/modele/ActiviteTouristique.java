@@ -9,12 +9,12 @@ public class ActiviteTouristique implements Serializable {
     private String id;
     private String titre;
     private String description;
-    private int nbEtoiles;
+    private double nbEtoiles;
     private int nbVotes;
     private String videoURL;
     private List<String> imagesURL;
 
-    public ActiviteTouristique(String id, String titre, String description, int nbEtoiles, int nbVotes, String videoURL, List<String> imagesURL) {
+    public ActiviteTouristique(String id, String titre, String description, double nbEtoiles, int nbVotes, String videoURL, List<String> imagesURL) {
         this.id = id;
         this.titre = titre;
         this.description = description;
@@ -22,27 +22,6 @@ public class ActiviteTouristique implements Serializable {
         this.nbVotes = nbVotes;
         this.videoURL = videoURL;
         this.imagesURL = imagesURL;
-    }
-
-    public static List<ActiviteTouristique> getAll() {
-        List<ActiviteTouristique> data = new ArrayList<>();
-
-        String loremImpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-        String video = "https://www.youtube.com/embed/Nya6D8mKtSo";
-        List<String> images = new ArrayList<>(Arrays.asList("https://picsum.photos/id/237/200/300", "https://picsum.photos/seed/picsum/200/300", "https://picsum.photos/200/300?grayscale"));
-
-        data.add(new ActiviteTouristique("1", "Activité touristique numero 1", loremImpsum, 5, 10, video, images));
-        data.add(new ActiviteTouristique("2", "Activité 2", loremImpsum, 4, 9, video, images));
-        data.add(new ActiviteTouristique("3", "Activité 3", loremImpsum, 3, 8, video, images));
-        data.add(new ActiviteTouristique("4", "Activité 4", loremImpsum, 2, 7, video, images));
-        data.add(new ActiviteTouristique("5", "Activité 5", loremImpsum, 1, 6, video, images));
-        data.add(new ActiviteTouristique("6", "Activité 6", loremImpsum, 5, 5, video, images));
-        data.add(new ActiviteTouristique("7", "Activité 7", loremImpsum, 4, 4, video, images));
-        data.add(new ActiviteTouristique("8", "Activité 8", loremImpsum, 3, 3, video, images));
-        data.add(new ActiviteTouristique("9", "Activité 9", loremImpsum, 2, 2, video, images));
-        data.add(new ActiviteTouristique("10", "Activité 10", loremImpsum, 1, 1, video, images));
-
-        return data;
     }
 
     public String getId() {
@@ -69,11 +48,11 @@ public class ActiviteTouristique implements Serializable {
         this.description = description;
     }
 
-    public int getNbEtoiles() {
+    public double getNbEtoiles() {
         return nbEtoiles;
     }
 
-    public void setNbEtoiles(int nbEtoiles) {
+    public void setNbEtoiles(double nbEtoiles) {
         this.nbEtoiles = nbEtoiles;
     }
 

@@ -2,10 +2,12 @@ package com.example.tourisme_1076_1146.controleur;
 
 import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -24,16 +26,62 @@ public final class Controleur {
         super();
     }
 
-    public List<ActiviteTouristique> getAllActiviteTouristique() {
-        return ActiviteTouristique.getAll();
+    public interface CallbackWebServiceGetAllActiviteTouristique {
+        void onSuccess(List<ActiviteTouristique> liste);
+        void onFailure(String error);
     }
 
-    public interface CallbackWS {
+    public static void getAllActiviteTouristique(CallbackWebServiceGetAllActiviteTouristique callback) throws Exception {
+        try {
+            Request request = new Request.Builder()
+                    .url("https://android-back-m1.vercel.app/activities/")
+                    .get()
+                    .header("x-auth-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2U0MjRiNTYyM2IyMGM3MmU5YmRhYSIsImlhdCI6MTY5MTMyMDk3NywiZXhwIjoxNjkxNDA3Mzc3fQ.kkCt1DnRWaWXgSw5oZnPrVfcW3Pv8PP0BLWoBkSmprY")
+                    .build();
+
+            new OkHttpClient().newCall(request).enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    List<ActiviteTouristique> liste = new ArrayList<>();
+                    try {
+                        JSONArray jsonArray = new JSONArray(response.body().string());
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            String id = jsonObject.getString("_id");
+                            String titre = jsonObject.getString("titre");
+                            String description = jsonObject.getString("description");
+                            double nbEtoiles = jsonObject.getDouble("averageEtoiles");
+                            int nbVotes = jsonObject.getInt("voteCount");
+                            String videoURL = jsonObject.getString("video");
+                            JSONArray imagesArray = jsonObject.getJSONArray("images");
+                            List<String> imagesURL = new ArrayList<>();
+                            for (int j = 0; j < imagesArray.length(); j++)
+                                imagesURL.add(imagesArray.getString(j));
+                            ActiviteTouristique activiteTouristique = new ActiviteTouristique(id, titre, description, nbEtoiles, nbVotes, videoURL, imagesURL);
+                            liste.add(activiteTouristique);
+                        }
+                        callback.onSuccess(liste);
+                    } catch (JSONException e) {
+                        callback.onFailure(e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    callback.onFailure(e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public interface CallbackWebServiceLoginInscription {
         void onSuccess(String token);
         void onFailure(String error);
     }
 
-    public static void inscription(String nom, String prenom, String email, String mdp1, String mdp2, CallbackWS callback) {
+    public static void inscription(String nom, String prenom, String email, String mdp1, String mdp2, CallbackWebServiceLoginInscription callback) {
         try {
             RequestBody body = new FormBody.Builder()
                     .add("nom", nom)
@@ -78,7 +126,7 @@ public final class Controleur {
         }
     }
 
-    public static void authentification(String email, String mdp, CallbackWS callback) throws Exception {
+    public static void authentification(String email, String mdp, CallbackWebServiceLoginInscription callback) throws Exception {
         try {
             RequestBody body = new FormBody.Builder()
                     .add("email", email)

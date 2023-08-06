@@ -102,7 +102,7 @@ public class LoginFragment extends Fragment {
 
     private void authentification() {
         try {
-            Controleur.getInstance().authentification(this.email, this.mdp, new Controleur.CallbackWS() {
+            Controleur.getInstance().authentification(this.email, this.mdp, new Controleur.CallbackWebServiceLoginInscription() {
                 @Override
                 public void onSuccess(String token) {
                     LoginFragment.this.getActivity().runOnUiThread(new Runnable() {

@@ -158,7 +158,7 @@ public class InscriptionFragment extends Fragment {
     private void inscription(String nom, String prenom, String email, String mdp1, String mdp2) {
 
         try {
-            Controleur.getInstance().inscription(nom, prenom, email, mdp1, mdp2, new Controleur.CallbackWS() {
+            Controleur.getInstance().inscription(nom, prenom, email, mdp1, mdp2, new Controleur.CallbackWebServiceLoginInscription() {
                 @Override
                 public void onSuccess(String token) {
                     InscriptionFragment.this.getActivity().runOnUiThread(new Runnable() {

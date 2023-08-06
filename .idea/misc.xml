@@ -11,8 +11,10 @@
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_baseline_nights_stay_10.xml" value="0.2095" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_baseline_nights_stay_24.xml" value="0.2095" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.2095" />
+        <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_baseline_star_half_24.xml" value="0.219" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_baseline_star_outline_24.xml" value="0.2095" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_baseline_star_rate_gray_24.xml" value="0.2895" />
+        <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_baseline_star_rate_yellow_24.xml" value="0.219" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_baseline_wb_sunny_10.xml" value="0.2095" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_baseline_wb_sunny_24.xml" value="0.2095" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2095" />
@@ -25,7 +27,7 @@
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/drawable/white_background.xml" value="0.2895" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/layout/activity_detail.xml" value="0.21225071225071226" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/layout/activity_inscription.xml" value="0.1953551912568306" />
-        <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/layout/activity_liste.xml" value="0.22894736842105262" />
+        <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/layout/activity_liste.xml" value="0.1" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/layout/activity_login.xml" value="0.22894736842105262" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/layout/activity_login_inscription.xml" value="0.22598684210526315" />
         <entry key="..\:/ITUniversity/M1/dev-mobile-android/Tourisme10761146/app/src/main/res/layout/activity_main.xml" value="0.22894736842105262" />
