@@ -40,6 +40,9 @@ public class RechercheFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (searchSubmitListener != null) {
+                    searchSubmitListener.onSearchSubmit(newText);
+                }
                 return true;
             }
         });

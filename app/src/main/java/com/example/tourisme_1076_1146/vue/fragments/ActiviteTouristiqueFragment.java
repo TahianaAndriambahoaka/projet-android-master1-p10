@@ -19,7 +19,7 @@ import com.example.tourisme_1076_1146.vue.activities.DetailActivity;
 import java.util.List;
 
 public class ActiviteTouristiqueFragment extends Fragment {
-    private ActiviteTouristique activiteTouristique;
+    public ActiviteTouristique activiteTouristique;
     private Integer evaluation;
 
     public ActiviteTouristiqueFragment() {
@@ -49,31 +49,36 @@ public class ActiviteTouristiqueFragment extends Fragment {
             ((TextView) v.findViewById(R.id.nbRates)).setText("(" + this.activiteTouristique.getNbVotes() + " " + getString(R.string.votes) + ")");
         }
 
-        if (this.activiteTouristique.getNbEtoiles() >= 1) {
-            if ((int)this.activiteTouristique.getNbEtoiles() == 1)
+        if (this.activiteTouristique.getNbEtoiles() >= 0) {
+            if ((int)this.activiteTouristique.getNbEtoiles() == 0 && this.activiteTouristique.getNbEtoiles()>0)
                 ((ImageView)v.findViewById(R.id.etoile1)).setImageResource(R.drawable.ic_baseline_star_half_24);
-            else
+            else if(this.activiteTouristique.getNbEtoiles()>0)
                 ((ImageView) v.findViewById(R.id.etoile1)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
         }
-        if (this.activiteTouristique.getNbEtoiles() >= 2) {
-            if ((int)this.activiteTouristique.getNbEtoiles() == 2)
+        if (this.activiteTouristique.getNbEtoiles() >= 1) {
+            if ((int)this.activiteTouristique.getNbEtoiles() == 1 && this.activiteTouristique.getNbEtoiles()>1)
                 ((ImageView)v.findViewById(R.id.etoile2)).setImageResource(R.drawable.ic_baseline_star_half_24);
-            else
+            else if(this.activiteTouristique.getNbEtoiles()>1)
                 ((ImageView) v.findViewById(R.id.etoile2)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
         }
-        if (this.activiteTouristique.getNbEtoiles() >= 3) {
-            if ((int)this.activiteTouristique.getNbEtoiles() == 3)
+        if (this.activiteTouristique.getNbEtoiles() >= 2) {
+            if ((int)this.activiteTouristique.getNbEtoiles() == 2 && this.activiteTouristique.getNbEtoiles()>2)
                 ((ImageView)v.findViewById(R.id.etoile3)).setImageResource(R.drawable.ic_baseline_star_half_24);
-            else
+            else if(this.activiteTouristique.getNbEtoiles()>2)
                 ((ImageView) v.findViewById(R.id.etoile3)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
         }
-        if (this.activiteTouristique.getNbEtoiles() >= 4) {
-            if ((int)this.activiteTouristique.getNbEtoiles() == 4)
+        if (this.activiteTouristique.getNbEtoiles() >= 3) {
+            if ((int)this.activiteTouristique.getNbEtoiles() == 3 && this.activiteTouristique.getNbEtoiles()>3)
                 ((ImageView)v.findViewById(R.id.etoile4)).setImageResource(R.drawable.ic_baseline_star_half_24);
-            else
+            else if(this.activiteTouristique.getNbEtoiles()>3)
                 ((ImageView) v.findViewById(R.id.etoile4)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
         }
-        if ((int)this.activiteTouristique.getNbEtoiles() == 5) ((ImageView)v.findViewById(R.id.etoile5)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+        if (this.activiteTouristique.getNbEtoiles() >= 4) {
+            if ((int)this.activiteTouristique.getNbEtoiles() == 4 && this.activiteTouristique.getNbEtoiles()>4)
+                ((ImageView)v.findViewById(R.id.etoile5)).setImageResource(R.drawable.ic_baseline_star_half_24);
+            else if(this.activiteTouristique.getNbEtoiles()>4)
+                ((ImageView) v.findViewById(R.id.etoile5)).setImageResource(R.drawable.ic_baseline_star_rate_yellow_24);
+        }
 
         ImageView imageView = v.findViewById(R.id.image);
         Glide.with(this)

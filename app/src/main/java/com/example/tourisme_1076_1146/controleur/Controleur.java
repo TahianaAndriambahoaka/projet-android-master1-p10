@@ -120,7 +120,6 @@ public final class Controleur {
                                 if (userID.equals(PreferenceManager.getDefaultSharedPreferences(Controleur.context).getString("id", ""))) {
                                     JSONObject etoileValue = etoileElement.getJSONObject(1);
                                     etoileNumber = etoileValue.getInt("$numberInt");
-                                    evaluations.add(etoileNumber);
                                     break;
                                 }
                             }

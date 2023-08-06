@@ -12,19 +12,16 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
@@ -34,7 +31,6 @@ import com.example.tourisme_1076_1146.controleur.LanguagePreference;
 import com.example.tourisme_1076_1146.controleur.ThemePreference;
 import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 import com.example.tourisme_1076_1146.vue.fragments.ActiviteTouristiqueFragment;
-import com.example.tourisme_1076_1146.vue.fragments.LoginFragment;
 import com.example.tourisme_1076_1146.vue.fragments.RechercheFragment;
 
 import java.util.ArrayList;
@@ -46,11 +42,32 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
     SwipeRefreshLayout swipeRefreshLayout;
     LinearLayout containerLayout;
     ImageView loading;
+    List<ActiviteTouristique> listeActiviteTouristique;
+    List<Integer> listeEvaluation;
+
 
     @Override
     public void onSearchSubmit(String query) {
-        // Traitez la recherche soumise ici (par exemple, affichez un Toast)
-        Toast.makeText(this, "Recherche soumise : " + query, Toast.LENGTH_SHORT).show();
+        List<Integer> indices = new ArrayList<>();
+        query = query.toLowerCase();
+
+        for (int i = 0; i < this.containerLayout.getChildCount(); i++) {
+            View fragmentToHide = this.containerLayout.getChildAt(i);
+            fragmentToHide.setVisibility(View.GONE);
+        }
+        for (int i = 0; i < this.listeActiviteTouristique.size(); i++) {
+            ActiviteTouristique at = this.listeActiviteTouristique.get(i);
+            String titre = at.getTitre().toLowerCase();
+            if (titre.contains(query))
+                indices.add(i);
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        for (Fragment fragment : fragmentManager.getFragments()) {
+            if (fragment != null && fragment.getView() != null && fragment.getView().getParent() == ListeActivity.this.containerLayout)
+                fragmentManager.beginTransaction().remove(fragment).commit();
+        }
+        for (int i = 0; i < indices.size(); i++)
+            addActiviteTouristiqueFragment(new ActiviteTouristiqueFragment(this.listeActiviteTouristique.get(indices.get(i)), this.listeEvaluation.get(indices.get(i))));
     }
 
     @Override
@@ -84,6 +101,9 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.searchLayout, rechercheFragment);
             fragmentTransaction.commit();
+
+            ListeActivity.this.listeActiviteTouristique = new ArrayList<>();
+            ListeActivity.this.listeEvaluation = new ArrayList<>();
 
             this.loadData(false);
         } else
@@ -171,6 +191,8 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
                     ListeActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            ListeActivity.this.listeActiviteTouristique = liste;
+                            ListeActivity.this.listeEvaluation = evaluations;
                             if (reload) {
                                 FragmentManager fragmentManager = getSupportFragmentManager();
                                 for (Fragment fragment : fragmentManager.getFragments()) {
