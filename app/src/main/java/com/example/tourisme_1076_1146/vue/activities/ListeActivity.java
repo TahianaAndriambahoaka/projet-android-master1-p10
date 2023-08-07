@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -33,6 +32,7 @@ import com.example.tourisme_1076_1146.modele.ActiviteTouristique;
 import com.example.tourisme_1076_1146.vue.fragments.ActiviteTouristiqueFragment;
 import com.example.tourisme_1076_1146.vue.fragments.RechercheFragment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -87,7 +87,6 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
         this.containerLayout = findViewById(R.id.containerLayout);
 
         this.loading = findViewById(R.id.loading);
-        this.loading.setImageResource(R.drawable.loading_night);
         if (ThemePreference.getThemeMode(this).equals("DARK"))
             Glide.with(this).asGif().load(R.drawable.loading_night).into(this.loading);
         else
@@ -95,19 +94,26 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
 
         if (savedInstanceState == null) {
             this.loading.setVisibility(View.VISIBLE);
-            RechercheFragment rechercheFragment = new RechercheFragment();
-            rechercheFragment.setOnSearchSubmitListener(this);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.searchLayout, rechercheFragment);
-            fragmentTransaction.commit();
 
             ListeActivity.this.listeActiviteTouristique = new ArrayList<>();
             ListeActivity.this.listeEvaluation = new ArrayList<>();
 
             this.loadData(false);
-        } else
+        } else {
+            this.listeActiviteTouristique = (List<ActiviteTouristique>) savedInstanceState.getSerializable("listeActiviteTouristique");
+            this.listeEvaluation = (List<Integer>) savedInstanceState.getSerializable("listeEvaluation");
             ListeActivity.this.loading.setVisibility(View.GONE);
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        RechercheFragment rechercheFragment = new RechercheFragment();
+        rechercheFragment.setOnSearchSubmitListener(this);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.searchLayout, rechercheFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+
 
 
         this.swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
@@ -131,7 +137,8 @@ public class ListeActivity extends AppCompatActivity implements RechercheFragmen
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("reloaded", true);
+        outState.putSerializable("listeActiviteTouristique", (Serializable) this.listeActiviteTouristique);
+        outState.putSerializable("listeEvaluation", (Serializable) this.listeEvaluation);
     }
 
     @Override

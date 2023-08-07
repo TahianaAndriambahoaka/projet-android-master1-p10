@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -18,6 +19,7 @@ public class RechercheFragment extends Fragment {
     }
 
     private OnSearchSubmitListener searchSubmitListener;
+    private SearchView searchView;
 
     public void setOnSearchSubmitListener(OnSearchSubmitListener listener) {
         searchSubmitListener = listener;
@@ -28,8 +30,8 @@ public class RechercheFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recherche, container, false);
 
-        SearchView searchView = v.findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        this.searchView = v.findViewById(R.id.searchView);
+        this.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (searchSubmitListener != null) {
@@ -48,5 +50,27 @@ public class RechercheFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (searchSubmitListener != null) {
+                    searchSubmitListener.onSearchSubmit(query);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (searchSubmitListener != null) {
+                    searchSubmitListener.onSearchSubmit(newText);
+                }
+                return true;
+            }
+        });
     }
 }

@@ -37,9 +37,9 @@
 
                     <ImageView
                         android:id="@+id/loading"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        app:srcCompat="@drawable/loading_night"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        app:srcCompat="@drawable/loading_light"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center_horizontal"
                         android:layout_marginTop="25dp"/>
