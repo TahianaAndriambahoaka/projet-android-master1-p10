@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -85,7 +87,9 @@ public class ActiviteTouristiqueFragment extends Fragment {
                 .load(this.activiteTouristique.getImagesURL().get(0))
                 .into(imageView);
 
-        v.findViewById(R.id.details).setOnClickListener(new View.OnClickListener() {
+        Button details = v.findViewById(R.id.details);
+        details.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.link));
+        details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
